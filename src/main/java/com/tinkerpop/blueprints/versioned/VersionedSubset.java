@@ -2,6 +2,7 @@ package com.tinkerpop.blueprints.versioned;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 /**
  * Construct using {@link VersionedGraph#createVersionedSubset(Object, long, long)}
@@ -28,7 +29,13 @@ public class VersionedSubset
         if(v != null)
             throw new NotSymbolicException(v);
 
-
+        // TODO: haha funny, just getting this to compile
+        return new SymbolicVertex() {
+            @Override
+            public Object id() {
+                return null;
+            }
+        };
     }
 
     /**
@@ -54,17 +61,28 @@ public class VersionedSubset
 
     public VersionedVertex addVertex(Object id)
     {
-        final VersionedVertex vx;
+        // TODO: haha funny, just getting this to compile
+        final VersionedVertex vx = new VersionedVertex() {
+            @Override
+            public Object id() {
+                return null;
+            }
+
+            @Override
+            public VersionedSubset owner() {
+                return null;
+            }
+        };
 
         ownedVx.put(id, vx);
         return vx;
     }
 
     // TODO VersionedEdge
-    void addEdge(SymbolicVertex a, SymbolicVertex b);
-    void addEdge(SymbolicVertex a, VersionedVertex b);
-    void addEdge(VersionedVertex b, SymbolicVertex a);
-    void addEdge(VersionedVertex a, VersionedVertex b);
+    //void addEdge(SymbolicVertex a, SymbolicVertex b);
+    //void addEdge(SymbolicVertex a, VersionedVertex b);
+    //void addEdge(VersionedVertex b, SymbolicVertex a);
+    //void addEdge(VersionedVertex a, VersionedVertex b);
 
     /**
      * Commit this subset to the graph.
@@ -81,7 +99,8 @@ public class VersionedSubset
      */
     public long commit()
     {
-        return graph.commit(this);
+        //return graph.commit(this);
+        return new Random().nextLong(); // TODO: haha funny, just getting this to compile
     }
 
     void rollback()
