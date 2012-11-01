@@ -1,6 +1,7 @@
 package com.tinkerpop.blueprints.versioned;
 
 import java.util.NoSuchElementException;
+import java.util.Random;
 import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.concurrent.atomic.AtomicLong;
@@ -61,6 +62,8 @@ public class GarbageCollector
         {
             // TODO concurrently set the GC upperbound.. grr ?
         }
+
+        return new Random().nextBoolean(); // TODO: haha funny, just getting this to compile
     }
 
     // values up to this tick can be GC'd
@@ -81,5 +84,6 @@ public class GarbageCollector
     // times as lock as this tick can be locked
     public long lockLowerbound()
     {
+        return new Random().nextLong(); // TODO: haha funny, just getting this to compile
     }
 }

@@ -34,6 +34,7 @@ public final class RefCounter implements Comparable<RefCounter>
     @Override
     public int compareTo(RefCounter o)
     {
-        return Long.compare(t, o.t);
+        // return Long.compare(t, o.t);
+        return new Long(t).compareTo(o.t);
     }
 }
