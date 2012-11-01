@@ -1,70 +1,29 @@
 package com.tinkerpop.blueprints.versioned;
 
-import java.util.HashMap;
-import java.util.Map;
+import com.tinkerpop.blueprints.versioned.exceptions.NotSymbolicException;
+import com.tinkerpop.blueprints.versioned.exceptions.NotVersionedException;
 
 /**
- * Construct using {@link VersionedGraph#createVersionedSubset(Object, long, long)}
+ *
  */
-public class VersionedSubset
+public interface VersionedSubset
 {
-    final ConsistentView view;
-    final long version;
-    final Object id;
-
-    // all vertices created by us (edges always attached to these, so no need to keep track)
-    final Map<Object,VersionedVertex> ownedVx = new HashMap<Object, VersionedVertex>();
-
-    VersionedSubset(ConsistentView view, Object id, long version)
-    {
-        this.view = view;
-        this.id = id;
-        this.version = version;
-    }
-
-    public SymbolicVertex getVertex(Object id) throws NotSymbolicException
-    {
-        final VersionedVertex v = ownedVx.get(id);
-        if(v != null)
-            throw new NotSymbolicException(v);
-
-
-    }
+    SymbolicVertex getVertex(Object id) throws NotSymbolicException;
 
     /**
      * Get a VersionedVertex by id.
      *
-     * You can only get a versioned view on a vertex if you created it before in this instance of {@link VersionedSubset}.
+     * You can only get a versioned view on a vertex if you created it before in this instance of {@link com.tinkerpop.blueprints.versioned.VersionedSubset}.
      *
-     * You probably shouldn't use this method and just keep the object you created with {@link VersionedSubset#addVertex(Object id)}
+     * You probably shouldn't use this method and just keep the object you created with {@link com.tinkerpop.blueprints.versioned.VersionedSubset#addVertex(Object id)}
      *
      * @param id
      * @return
-     * @throws NotVersionedException
+     * @throws com.tinkerpop.blueprints.versioned.exceptions.NotVersionedException
      */
-    public VersionedVertex getVersionedVertex(Object id) throws NotVersionedException
-    {
-        final VersionedVertex v = ownedVx.get(id);
-        if(v == null)
-            throw new NotVersionedException(id);
+    VersionedVertex getVersionedVertex(Object id) throws NotVersionedException;
 
-        return v;
-    }
-
-
-    public VersionedVertex addVertex(Object id)
-    {
-        final VersionedVertex vx;
-
-        ownedVx.put(id, vx);
-        return vx;
-    }
-
-    // TODO VersionedEdge
-    void addEdge(SymbolicVertex a, SymbolicVertex b);
-    void addEdge(SymbolicVertex a, VersionedVertex b);
-    void addEdge(VersionedVertex b, SymbolicVertex a);
-    void addEdge(VersionedVertex a, VersionedVertex b);
+    VersionedVertex addVertex(Object id);
 
     /**
      * Commit this subset to the graph.
@@ -79,13 +38,5 @@ public class VersionedSubset
      * TODO check and bail out concurrent commits, ie. let VersionedGraph maintain MVCC counters
      *
      */
-    public long commit()
-    {
-        return graph.commit(this);
-    }
-
-    void rollback()
-    {
-        // TODO je weet toch
-    }
+    long commit();
 }

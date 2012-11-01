@@ -1,4 +1,4 @@
-package com.tinkerpop.blueprints.versioned;
+package com.tinkerpop.blueprints.versioned.exceptions;
 
 /**
  *

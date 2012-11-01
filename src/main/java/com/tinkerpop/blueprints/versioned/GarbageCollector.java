@@ -1,15 +1,13 @@
 package com.tinkerpop.blueprints.versioned;
 
+import com.tinkerpop.blueprints.versioned.exceptions.VersionNoLongerAvailableException;
+
 /**
- * Created with IntelliJ IDEA.
- * User: wires
- * Date: 11/1/12
- * Time: 12:49 PM
- * To change this template use File | Settings | File Templates.
+ * Responsible for tracking unused versions.
  */
 public interface GarbageCollector
 {
-    void lock(long tick) throws VersionNoLongerAvailableException;
+    void lock(long tick) throws VersionNoLongerAvailableExceptioen;
 
     boolean release(long tick);
 }

@@ -1,4 +1,6 @@
-package com.tinkerpop.blueprints.versioned;
+package com.tinkerpop.blueprints.versioned.exceptions;
+
+import com.tinkerpop.blueprints.versioned.VersionedVertex;
 
 /**
  *

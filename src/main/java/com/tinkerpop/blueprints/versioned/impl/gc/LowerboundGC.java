@@ -1,4 +1,7 @@
-package com.tinkerpop.blueprints.versioned;
+package com.tinkerpop.blueprints.versioned.impl.gc;
+
+import com.tinkerpop.blueprints.versioned.GarbageCollector;
+import com.tinkerpop.blueprints.versioned.exceptions.VersionNoLongerAvailableException;
 
 import java.util.NoSuchElementException;
 import java.util.concurrent.ConcurrentSkipListMap;
