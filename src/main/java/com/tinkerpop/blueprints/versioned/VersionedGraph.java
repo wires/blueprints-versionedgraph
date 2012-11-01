@@ -14,7 +14,7 @@ public class VersionedGraph
 
     final protected AtomicLong tx = new AtomicLong();
 
-    final protected GarbageCollector gc = new GarbageCollector();
+    final protected GarbageCollector gc = new DummyGC();
 
     public VersionedGraph(TransactionalGraph graph)
     {
