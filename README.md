@@ -27,15 +27,40 @@ visibile to the view. A view is a bit like a lock, it prevents old versions
 from being garbage collected. So you need to actively `release()` the view,
 or you can `refresh()` it to some newer timestamp.
 
+
+## Symbolic and versioned vertices
+
+Each vertex in the unversioned graph has an id.
+
+This is no different in the versioned graph, except that now we have
+multiple versions of a vertex. So we distinguish two kinds of vertices:
+/symbolic/ and /versioned/.
+
+When you create a vertex through a VersionedSubset it is always a
+VersionedVertex:
+
+    final VersionedVertex v = subset.addVertex("x")
+    assertTrue(v.getId().equals("x"))
+    assertTrue(v.getVersion() == subset.getVersion())
+
+The VersionedVertex is stored in the underlying graph as a regular
+vertex with as id a tuple (id,version), so `Pair<Object,Long>`.
+
+Linking between VersionedVertices withing a VersionedSubset is not
+problem. If you want to link to a vertex outside the VSS you need to
+link to a symbolic vertex
+
+
 # How?
 
-	TODO update the stuff below
+We view a graph as the union of subsets.
 
-We view a graph as the union of subgraphs.
+The only way to modify the graph is through the adding, updating or removal of subsets.
 
-The only way to modify the graph is through the adding, updating or removal of subgraphs.
+Subsets are identified using an id (Object) and a version (long)
 
-Subgraphs are identified using an id (String) and a version (long).
+Vertices and edges created through the subset are owned by the subsets.
+
 
 Subgraphs are versioned and traversals always find the latest version of a subgraph.
 
