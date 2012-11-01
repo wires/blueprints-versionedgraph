@@ -21,7 +21,7 @@ public class GarbageCollector
         // get the refcounter
         AtomicLong rc = locks.get(tick);
 
-        // there is non, so we add one
+        // there is none, so we add one
         if(rc == null)
         {
             // initialize new reference counter
