@@ -7,6 +7,7 @@ import com.tinkerpop.blueprints.versioned.impl.gc.DummyGC;
 
 import java.util.concurrent.atomic.AtomicLong;
 
+
 /**
  * Gives a versioned view on a {@link com.tinkerpop.blueprints.TransactionalGraph}.
  *

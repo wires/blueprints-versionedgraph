@@ -44,7 +44,6 @@ public interface VersionedSubset
      */
     VersionedVertex getVersionedVertex(Object id) throws NotVersionedException;
 
-
     /**
      * Commit this subset to the graph.
      *

@@ -23,15 +23,15 @@ public class VersionedSubsetImpl implements VersionedSubset
         this.version = version;
     }
 
+    /** {@inheritDoc} */
     @Override public SymbolicVertex getVertex(Object id) throws NotSymbolicException
     {
         final VersionedVertex v = ownedVx.get(id);
         if(v != null)
             throw new NotSymbolicException(v);
-
-
     }
 
+    /** {@inheritDoc} */
     @Override public VersionedVertex getVersionedVertex(Object id) throws NotVersionedException
     {
         final VersionedVertex v = ownedVx.get(id);
@@ -48,6 +48,7 @@ public class VersionedSubsetImpl implements VersionedSubset
         ownedVx.put(id, vx);
         return vx;
     }
+
 
     // TODO VersionedEdge
     void addEdge(SymbolicVertex a, SymbolicVertex b);
