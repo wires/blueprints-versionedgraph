@@ -8,22 +8,42 @@ import com.tinkerpop.blueprints.versioned.exceptions.NotVersionedException;
  */
 public interface VersionedSubset
 {
+    /**
+     * Get a reference to a vertex we don't own.
+     *
+     * @param id
+     *
+     * @return
+     *
+     * @throws NotSymbolicException We already created this vertex. You can get the VersionedVertex with this
+     *          {@code id} using {@link NotSymbolicException#getVersionedVertex()}
+     */
     SymbolicVertex getVertex(Object id) throws NotSymbolicException;
 
     /**
-     * Get a VersionedVertex by id.
+     * Create a vertex owned by this subset.
      *
-     * You can only get a versioned view on a vertex if you created it before in this instance of {@link com.tinkerpop.blueprints.versioned.VersionedSubset}.
+     * @param id
+     * @return
+     */
+    VersionedVertex addVertex(Object id);
+
+    /**
+     * Get a VersionedVertex by {@code id}.
      *
-     * You probably shouldn't use this method and just keep the object you created with {@link com.tinkerpop.blueprints.versioned.VersionedSubset#addVertex(Object id)}
+     * You can only get a versioned view on a vertex if you created it before in this instance of
+     * {@link com.tinkerpop.blueprints.versioned.VersionedSubset}.
+     *
+     * You probably shouldn't use this method and just keep the object you created with
+     * {@link com.tinkerpop.blueprints.versioned.VersionedSubset#addVertex(Object id)}
      *
      * @param id
      * @return
      * @throws com.tinkerpop.blueprints.versioned.exceptions.NotVersionedException
+     *
      */
     VersionedVertex getVersionedVertex(Object id) throws NotVersionedException;
 
-    VersionedVertex addVertex(Object id);
 
     /**
      * Commit this subset to the graph.

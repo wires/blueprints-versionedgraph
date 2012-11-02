@@ -41,7 +41,6 @@ public class VersionedSubsetImpl implements VersionedSubset
         return v;
     }
 
-
     @Override public VersionedVertex addVertex(Object id)
     {
         final VersionedVertex vx;

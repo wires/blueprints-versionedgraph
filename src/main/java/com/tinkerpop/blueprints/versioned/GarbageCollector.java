@@ -1,6 +1,6 @@
 package com.tinkerpop.blueprints.versioned;
 
-import com.tinkerpop.blueprints.versioned.exceptions.VersionNoLongerAvailableException;
+import com.tinkerpop.blueprints.versioned.exceptions.*;
 
 /**
  * Responsible for tracking unused versions.
