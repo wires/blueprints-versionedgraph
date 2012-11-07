@@ -41,6 +41,7 @@ public class VersionedSubsetImpl implements VersionedSubset
         return v;
     }
 
+    /** {@inheritDoc} */
     @Override public VersionedVertex addVertex(Object id)
     {
         final VersionedVertex vx;
@@ -50,11 +51,29 @@ public class VersionedSubsetImpl implements VersionedSubset
     }
 
 
+    /** {@inheritDoc} */
     // TODO VersionedEdge
-    void addEdge(SymbolicVertex a, SymbolicVertex b);
-    void addEdge(SymbolicVertex a, VersionedVertex b);
-    void addEdge(VersionedVertex b, SymbolicVertex a);
-    void addEdge(VersionedVertex a, VersionedVertex b);
+    void addEdge(SymbolicVertex a, SymbolicVertex b)
+    {
+
+    }
+
+    void addEdge(SymbolicVertex a, VersionedVertex b)
+    {
+
+    }
+
+    void addEdge(VersionedVertex b, SymbolicVertex a)
+    {
+
+    }
+
+    void addEdge(VersionedVertex a, VersionedVertex b)
+    {
+
+    }
+
+
 
     @Override public long commit()
     {

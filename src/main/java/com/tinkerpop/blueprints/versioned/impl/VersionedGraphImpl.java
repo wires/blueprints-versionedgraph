@@ -46,6 +46,13 @@ public class VersionedGraphImpl implements VersionedGraph
         }
     }
 
+    /**
+     * Get latest version of the vertex, considering transactions up to and including {@code tick}
+     */
+    void latestVertex(Object id, long tick)
+    {
+
+    }
 
     @Override public long tick()
     {
@@ -82,4 +89,5 @@ public class VersionedGraphImpl implements VersionedGraph
     {
         gc.release(tick);
     }
+
 }

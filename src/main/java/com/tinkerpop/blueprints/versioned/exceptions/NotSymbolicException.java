@@ -5,7 +5,7 @@ import com.tinkerpop.blueprints.versioned.VersionedVertex;
 /**
  *
  */
-public class NotSymbolicException extends Exception
+public class NotSymbolicException extends RuntimeException
 {
     final VersionedVertex v;
 

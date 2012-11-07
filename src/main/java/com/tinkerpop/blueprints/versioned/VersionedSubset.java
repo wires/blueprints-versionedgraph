@@ -6,7 +6,7 @@ import com.tinkerpop.blueprints.versioned.exceptions.NotVersionedException;
 /**
  *
  */
-public interface VersionedSubset
+public interface VersionedSubset extends ConsistentView
 {
     /**
      * Get a reference to a vertex we don't own.
@@ -18,7 +18,8 @@ public interface VersionedSubset
      * @throws NotSymbolicException We already created this vertex. You can get the VersionedVertex with this
      *          {@code id} using {@link NotSymbolicException#getVersionedVertex()}
      */
-    SymbolicVertex getVertex(Object id) throws NotSymbolicException;
+    @Override
+    SymbolicVertex getVertex(Object id);
 
     /**
      * Create a vertex owned by this subset.
