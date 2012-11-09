@@ -12,6 +12,8 @@ Two goals:
 
 ## Versioned Subsets
 
+![VersionedSubsets](https://github.com/0x01/blueprints-versionedgraph/raw/master/doc/versions.png)
+
 Each subset is assigned an ID and version. Multiple versions of the same ID
 will co-exist in the graph. Until the subset is committed it is not visible in
 the graph. Once committed to the graph, a subset can no longer be modified.
@@ -29,6 +31,8 @@ or you can `refresh()` it to some newer timestamp.
 
 
 ## Symbolic and versioned vertices
+
+![SymbolicVersioned](https://github.com/0x01/blueprints-versionedgraph/raw/master/doc/graph1.png)
 
 Each vertex in the unversioned graph has an id.
 
@@ -52,6 +56,23 @@ link to a symbolic vertex
 
 
 # How?
+
+## Basic structures
+
+![VersionedSubsets](https://github.com/0x01/blueprints-versionedgraph/raw/master/doc/svpair.png)
+
+Pair of a symbolic and versioned component with `versionOf` edge
+inbetween: `SVPair`
+
+![VersionedSubsets](https://github.com/0x01/blueprints-versionedgraph/raw/master/doc/svsquare.png)
+
+Two pairs, `SVSquare`, horizontal edges indicating ownership.
+
+![VersionedSubsets](https://github.com/0x01/blueprints-versionedgraph/raw/master/doc/svleggedsquare.png)
+
+Special square used by edges, it has two legs.
+
+## Some more talk
 
 We view a graph as the union of subsets.
 
