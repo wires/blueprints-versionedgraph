@@ -10,9 +10,37 @@ Two goals:
 * We want to give a "consistent" view on the graph, while avoiding global write
   locks.
 
-## Versioned Subsets
+This is summarized in the following picture:
 
 ![VersionedSubsets](https://github.com/0x01/blueprints-versionedgraph/raw/master/doc/versions.png)
+
+On the left we see a graph assembled from various subsets.
+
+On the right we see a single versioned subset. Each versioned subset
+has two parts:
+
+* the "symbolic" part, drawn in orange in the picture. This part keeps
+  track of the ownership of names and connects the various versions.
+  The ID of this part is the ID of the subset, so here it's `"A"`.
+
+* the "version" part, drawn in black. Here the components and their
+  properties are stored. Each version has as it's ID a 2-tuple of the
+  ID of the subset and the version. In the picture: `"A",1`, `"A",2`,
+  etc.
+
+The left part of the picture also indicates what `ConsistentView`s
+give you, namely a view on the graph, such that during the lifetime of
+the view, every time you resolve a name (symbol) to a version, you
+will resolve to the same version.
+
+So one way to picture this is by taking a "slice" of the graph,
+picking one version of each subset.
+
+(Note that, internally this is implemented using a global transaction
+counter and then ignoring transactions occuring after the view was
+constructed.)
+
+## Versioned Subsets
 
 Each subset is assigned an ID and version. Multiple versions of the same ID
 will co-exist in the graph. Until the subset is committed it is not visible in
@@ -28,7 +56,6 @@ certain time. All modifications done to the graph after this time are not
 visibile to the view. A view is a bit like a lock, it prevents old versions
 from being garbage collected. So you need to actively `release()` the view,
 or you can `refresh()` it to some newer timestamp.
-
 
 ## Symbolic and versioned vertices
 
@@ -71,6 +98,31 @@ Two pairs, `SVSquare`, horizontal edges indicating ownership.
 ![VersionedSubsets](https://github.com/0x01/blueprints-versionedgraph/raw/master/doc/svleggedsquare.png)
 
 Special square used by edges, it has two legs.
+
+## Versioned and scoped identifiers
+
+Identifiers are used to refer to and find objects in the graph.  Since
+we add some structure to the graph, this is reflected in the
+identifiers used. Each component in the versioned graph is given as
+identifier an instance of `ID`.
+
+`ID` essentially is a 3-tuple `<Namespace,Identifier,Version>`.
+
+We distinguish three identifiers scopes in a `VersionedGraph`:
+
+* Subsets
+* Vertices
+* Edges
+
+This means, that you can use the same identifier for a subset and a
+vertex without worrying about collisions.
+
+In addition, we store a version, with `version == 0` indicating that
+this identifier belongs to the symbolic component.
+
+## Symbolic components
+
+
 
 ## Some more talk
 
