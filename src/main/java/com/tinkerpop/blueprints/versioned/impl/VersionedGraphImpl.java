@@ -25,7 +25,7 @@ public class VersionedGraphImpl implements VersionedGraph
 
     @Override public VersionedSubset createVersionedSubset(Object id, long version, long t) throws VersionNoLongerAvailableException
     {
-        return new VersionedSubset(createConsistentView(t), id, version);
+        return null;//new VersionedSubset(createConsistentView(t), id, version);
     }
 
 
@@ -36,7 +36,7 @@ public class VersionedGraphImpl implements VersionedGraph
         try
         {
             // create new view
-            return new ConsistentView(this, t);
+            return null;//new ConsistentView(this, t);
         }
         catch (RuntimeException e)
         {
@@ -49,7 +49,7 @@ public class VersionedGraphImpl implements VersionedGraph
     /**
      * Get latest version of the vertex, considering transactions up to and including {@code tick}
      */
-    void latestVertex(Object id, long tick)
+    void latestVertex(Object id)
     {
 
     }

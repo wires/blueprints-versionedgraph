@@ -29,6 +29,8 @@ public class VersionedSubsetImpl implements VersionedSubset
         final VersionedVertex v = ownedVx.get(id);
         if(v != null)
             throw new NotSymbolicException(v);
+
+        return null; // TODO implement
     }
 
     /** {@inheritDoc} */
@@ -41,46 +43,49 @@ public class VersionedSubsetImpl implements VersionedSubset
         return v;
     }
 
+    @Override
+    public void addEdge(SymbolicVertex tail, SymbolicVertex head, String label)
+    {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public void addEdge(SymbolicVertex tail, VersionedVertex head, String label)
+    {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public void addEdge(VersionedVertex tail, SymbolicVertex head, String label)
+    {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public void addEdge(VersionedVertex tail, VersionedVertex head, String label)
+    {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
     /** {@inheritDoc} */
     @Override public VersionedVertex addVertex(Object id)
     {
-        final VersionedVertex vx;
-
-        ownedVx.put(id, vx);
-        return vx;
+        return null;
     }
 
-
-    /** {@inheritDoc} */
-    // TODO VersionedEdge
-    void addEdge(SymbolicVertex a, SymbolicVertex b)
+    @Override
+    public void refresh()
     {
-
     }
 
-    void addEdge(SymbolicVertex a, VersionedVertex b)
+    @Override
+    public long commit()
     {
-
+        return 0;
     }
 
-    void addEdge(VersionedVertex b, SymbolicVertex a)
-    {
-
-    }
-
-    void addEdge(VersionedVertex a, VersionedVertex b)
-    {
-
-    }
-
-
-
-    @Override public long commit()
-    {
-        return graph.commit(this);
-    }
-
-    void rollback()
+    @Override
+    public void rollback()
     {
         // TODO je weet toch
     }

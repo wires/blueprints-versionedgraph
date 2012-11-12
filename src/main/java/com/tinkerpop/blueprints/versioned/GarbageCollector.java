@@ -7,7 +7,7 @@ import com.tinkerpop.blueprints.versioned.exceptions.*;
  */
 public interface GarbageCollector
 {
-    void lock(long tick) throws VersionNoLongerAvailableExceptioen;
+    void lock(long tick) throws VersionNoLongerAvailableException;
 
     boolean release(long tick);
 }
