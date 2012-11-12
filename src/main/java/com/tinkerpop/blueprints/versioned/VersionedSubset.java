@@ -45,6 +45,16 @@ public interface VersionedSubset extends ConsistentView
      */
     VersionedVertex getVersionedVertex(Object id) throws NotVersionedException;
 
+    /** {@inheritDoc} */
+    // TODO VersionedEdge
+    void addEdge(SymbolicVertex tail, SymbolicVertex head, String label);
+
+    void addEdge(SymbolicVertex tail, VersionedVertex head, String label);
+
+    void addEdge(VersionedVertex tail, SymbolicVertex head, String label);
+
+    void addEdge(VersionedVertex tail, VersionedVertex head, String label);
+
     /**
      * Commit this subset to the graph.
      *
@@ -59,4 +69,6 @@ public interface VersionedSubset extends ConsistentView
      *
      */
     long commit();
+
+    void rollback();
 }

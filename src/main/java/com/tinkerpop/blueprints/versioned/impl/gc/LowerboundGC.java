@@ -64,6 +64,7 @@ public class LowerboundGC implements GarbageCollector
         {
             // TODO concurrently set the GC upperbound.. grr ?
         }
+        return true;
     }
 
     // values up to this tick can be GC'd
@@ -84,5 +85,6 @@ public class LowerboundGC implements GarbageCollector
     // times as lock as this tick can be locked
     public long lockLowerbound()
     {
+        return 0;
     }
 }
