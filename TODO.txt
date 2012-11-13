@@ -1,0 +1,4 @@
+
+http://maven.apache.org/skins/maven-fluido-skin/index.html
+
+https://github.com/kevinsawicki/github-maven-example

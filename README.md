@@ -123,6 +123,15 @@ this identifier belongs to the symbolic component.
 ## Symbolic components
 
 
+## Building docs
+
+UML in /doc/
+
+	mvn planetuml:generate
+
+or
+	mvn site:site
+
 
 ## Some more talk
 

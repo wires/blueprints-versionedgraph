@@ -1,0 +1,81 @@
+@startuml
+
+
+class OPair {
+    x : Vertex
+    owner : Edge
+}
+
+namespace vg.components
+
+
+    interface VSS {
+        v : Vertex
+        symbol : Edge
+
+
+        +symbol() : SSS
+
+        +addVertex(Object id) : VV
+        +addEdge(Object id, V head, V tail, String label)
+
+        +commit() : void
+        +rollback() : void
+    }
+
+    interface SSS {
+        Vertex s
+    }
+
+    interface SV {
+        s : Vertex
+        sOwn : Edge
+
+        +owner() : SSS
+    }
+
+    interface SE {
+        s : Vertex
+        sOwn : Edge
+
+        +owner() : SSS
+    }
+
+    interface VV {
+        v : Vertex
+        symbol : Edge
+        vOwn : Edge
+
+        +symbol() : SV
+
+        +owner() : VSS
+    }
+
+    interface VE {
+        v : Vertex
+        symbol : Edge
+        vOwn : Edge
+
+        head : Edge
+        tail : Edge
+
+        +symbol() : SE
+
+        +owner() : VSS
+    }
+
+    SV .. VV
+    SE .. VE
+    SSS .. VSS
+
+    VSS *-left- VV
+    VSS *-right- VE
+    SSS *-left- SV
+    SSS *-right- SE
+
+end namespace
+
+
+
+
+@enduml

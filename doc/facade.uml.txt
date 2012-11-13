@@ -1,0 +1,40 @@
+@startuml
+
+namespace vg
+
+    class VSS {
+        mutable : boolean
+        commit() : Provider<ConsistentView>
+    }
+
+    note "commit can return tx count, so user can get view that records right after commit" as N1
+
+    interface LLManager {
+        +VSS findVSS(Object id, long version)
+        +VV  findVV(Object id, long version)
+        +VE  findVE(Object id, long version)
+    }
+
+    interface ConsistentView {
+        -final long txCounter
+
+        +SV getVertex(Object id)
+        +SE getEdge(Object id)
+
+        +void refresh()
+        +void release()
+    }
+
+    interface VersionedGraph {
+        +createVSS(Object id, long version) : VSS
+        +getView() : ConsistentView
+    }
+
+    VersionedGraph -> ConsistentView
+    VersionedGraph -down-> LLManager
+    VersionedGraph -up-> VSS
+
+end namespace
+
+
+@enduml
