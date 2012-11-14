@@ -1,66 +1,61 @@
 @startuml
 
+namespace vg.model
 
-class OPair {
-    x : Vertex
-    owner : Edge
-}
-
-namespace vg.components
-
-
-    interface VSS {
-        v : Vertex
-        symbol : Edge
-
-
-        +symbol() : SSS
-
-        +addVertex(Object id) : VV
-        +addEdge(Object id, V head, V tail, String label)
-
-        +commit() : void
-        +rollback() : void
-    }
-
-    interface SSS {
-        Vertex s
-    }
-
-    interface SV {
-        s : Vertex
-        sOwn : Edge
-
+    class SV <<(I,#88ff88)>> {
+        +s() : Vertex
+        ..
+        +sOwn() : Edge
         +owner() : SSS
+        --
+        +versions() : Iterable<VV>
     }
 
-    interface SE {
-        s : Vertex
-        sOwn : Edge
+    class SSS <<(I,#88ff88)>> {
+        +s() : Vertex
+        --
+        +versions() : Iterable<VSS>
+    }
 
+    class SE <<(I,#88ff88)>> {
+        +s() : Vertex
+        ..
+        +sOwn() : Edge
         +owner() : SSS
+        --
+        +versions() : Iterable<VE>
     }
 
-    interface VV {
-        v : Vertex
-        symbol : Edge
-        vOwn : Edge
-
+    class VV <<(I,#88ff88)>> {
+        +v() : Vertex
+        +versionOf() : Edge
+        +vOwn() : Edge
+        --
         +symbol() : SV
-
+        ..
         +owner() : VSS
     }
 
-    interface VE {
-        v : Vertex
-        symbol : Edge
-        vOwn : Edge
+    class VSS <<(I,#88ff88)>> {
+        +v() : Vertex
+        +versionOf() : Edge
+        --
+        +symbol() : SSS
+        ..
+        +vertices() : Iterable<VV>
+        +edges() : Iterable<VE>
+    }
 
-        head : Edge
-        tail : Edge
-
+    class VE <<(I,#88ff88)>> {
+        +v() : Vertex
+        +versionOf() : Edge
+        +vOwn() : Edge
+        ..
+        +head() : Edge
+        +tail() : Edge
+        --
         +symbol() : SE
-
+        ..
         +owner() : VSS
     }
 
@@ -74,8 +69,5 @@ namespace vg.components
     SSS *-right- SE
 
 end namespace
-
-
-
 
 @enduml

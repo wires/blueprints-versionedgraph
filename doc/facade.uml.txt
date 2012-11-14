@@ -1,22 +1,28 @@
 @startuml
 
-namespace vg
+namespace vg.api
 
-    class VSS {
-        mutable : boolean
-        commit() : Provider<ConsistentView>
+    class VSS <<(I,#88ff88)>>  {
+        -mutable : boolean
+        +addVertex(Object id) : VV
+        +addEdge(Object id, V head, V tail, String label) : VE
     }
 
-    note "commit can return tx count, so user can get view that records right after commit" as N1
-
-    interface LLManager {
-        +VSS findVSS(Object id, long version)
-        +VV  findVV(Object id, long version)
-        +VE  findVE(Object id, long version)
+    class LLManager <<(I,#88ff88)>> {
+        +findVSS(Object id, long version) : VSS
+        +findVV(Object id, long version) : VV
+        +findVE(Object id, long version) : VE
+        ..
+        +addSubset(Object id, long version) : VSS
+        +addVertex(VSS owner, Object id) : VV
+        +addEdge(VSS owner, Object id, SV head, SV tail, String label) : VE
+        +addEdge(VSS owner, Object id, VV head, SV tail, String label) : VE
+        +addEdge(VSS owner, Object id, SV head, VV tail, String label) : VE
+        +addEdge(VSS owner, Object id, VV head, VV tail, String label) : VE
     }
 
-    interface ConsistentView {
-        -final long txCounter
+    class ConsistentView <<(I,#88ff88)>> {
+        -pointInTime : long
 
         +SV getVertex(Object id)
         +SE getEdge(Object id)
@@ -25,14 +31,18 @@ namespace vg
         +void release()
     }
 
-    interface VersionedGraph {
-        +createVSS(Object id, long version) : VSS
-        +getView() : ConsistentView
+    class VersionedGraph <<(I,#88ff88)>> {
+        +subsetCreate(Object id, long version) : VSS
+        +subsetCommit(VSS vss) : long
+        +subsetRollback(VSS vss) : void
+
+        +now() : long
+        +view(long t) : ConsistentView
     }
 
-    VersionedGraph -> ConsistentView
+    VersionedGraph -left-> ConsistentView
     VersionedGraph -down-> LLManager
-    VersionedGraph -up-> VSS
+    VersionedGraph -right-> VSS
 
 end namespace
 

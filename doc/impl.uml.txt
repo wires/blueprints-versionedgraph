@@ -1,0 +1,39 @@
+@startuml
+
+namespace vg.impl
+
+interface SV
+interface VV
+interface SE
+interface VE
+interface SSS
+interface VSS
+
+V ..|> VV
+V ..|> SV
+E ..|> SE
+E ..|> VE
+SS ..|> SSS
+SS ..|> VSS
+
+class SS {
+    -ss : SVPair
+}
+
+class V {
+    -vertex : SVSquare
+}
+
+class E {
+    -edge : SVHair
+}
+
+class LLGraph {
+    +createSVPair(Namespace ns, Object id, long version) : SVpair
+    +createSVSquare(SVPair owner, Namespace ns, Object id, long version) : SVsquare
+    +createSVHair(SVPair owner, SVPair ownee, Vertex tail, Vertex head, String label) : SVhair
+}
+
+end namespace
+
+@enduml
