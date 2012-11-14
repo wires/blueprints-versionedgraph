@@ -16,10 +16,9 @@ public interface VersionedGraph
      *
      * @param id
      * @param version
-     * @param t
      * @return
      */
-    VersionedSubset createVersionedSubset(Object id, long version, long t) throws VersionNoLongerAvailableException;
+    VersionedSubset createVersionedSubset(Object id, long version);
 
     /**
      * Create consistent view at time {@code t}

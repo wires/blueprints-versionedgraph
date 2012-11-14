@@ -1,9 +1,8 @@
 package com.tinkerpop.blueprints.versioned;
 
-/**
- *
- */
-public interface VersionedVertex
+import com.tinkerpop.blueprints.Element;
+
+public interface VersionedVertex extends Element
 {
     VersionedSubset owner();
     SymbolicVertex symbolicVertex();

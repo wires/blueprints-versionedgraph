@@ -1,26 +1,12 @@
 package com.tinkerpop.blueprints.versioned;
 
-import com.tinkerpop.blueprints.versioned.exceptions.NotSymbolicException;
 import com.tinkerpop.blueprints.versioned.exceptions.NotVersionedException;
 
 /**
  *
  */
-public interface VersionedSubset extends ConsistentView
+public interface VersionedSubset
 {
-    /**
-     * Get a reference to a vertex we don't own.
-     *
-     * @param id
-     *
-     * @return
-     *
-     * @throws NotSymbolicException We already created this vertex. You can get the VersionedVertex with this
-     *          {@code id} using {@link NotSymbolicException#getVersionedVertex()}
-     */
-    @Override
-    SymbolicVertex getVertex(Object id);
-
     /**
      * Create a vertex owned by this subset.
      *
@@ -44,16 +30,6 @@ public interface VersionedSubset extends ConsistentView
      *
      */
     VersionedVertex getVersionedVertex(Object id) throws NotVersionedException;
-
-    /** {@inheritDoc} */
-    // TODO VersionedEdge
-    void addEdge(SymbolicVertex tail, SymbolicVertex head, String label);
-
-    void addEdge(SymbolicVertex tail, VersionedVertex head, String label);
-
-    void addEdge(VersionedVertex tail, SymbolicVertex head, String label);
-
-    void addEdge(VersionedVertex tail, VersionedVertex head, String label);
 
     /**
      * Commit this subset to the graph.

@@ -6,9 +6,6 @@ import org.testng.annotations.Test;
 
 import static org.fest.assertions.Assertions.assertThat;
 
-/**
- *
- */
 public class LLTest
 {
     TinkerGraph graph;
