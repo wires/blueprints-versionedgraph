@@ -130,6 +130,12 @@ We define a mapping between a `VersionedGraph` and a regular
 graph. Then, a `ConsistentView` behaves pretty much like a regular
 graph, except that you cannot modify it.
 
+## Elements of a versioned graph
+
+![ElementsOfVersionedGraph](https://github.com/0x01/blueprints-versionedgraph/raw/master/doc/api.uml.png)
+
+![HighLevelInterface](https://github.com/0x01/blueprints-versionedgraph/raw/master/doc/facade.uml.png)
+
 ## Basic structures
 
 ![VersionedSubsets](https://github.com/0x01/blueprints-versionedgraph/raw/master/doc/svpair.png)
