@@ -31,6 +31,10 @@ public interface VersionedSubset
      */
     VersionedVertex getVersionedVertex(Object id) throws NotVersionedException;
 
+    Iterable<VersionedVertex> vertices();
+    Iterable<VersionedEdge> edges();
+
+
     /**
      * Commit this subset to the graph.
      *

@@ -23,11 +23,11 @@ public class VersionedGraphImpl implements VersionedGraph
         this.graph = graph;
     }
 
-    @Override public VersionedSubset createVersionedSubset(Object id, long version, long t) throws VersionNoLongerAvailableException
+    @Override
+    public VersionedSubset createVersionedSubset(Object id, long version)
     {
-        return null;//new VersionedSubset(createConsistentView(t), id, version);
+        return null;
     }
-
 
     @Override public ConsistentView createConsistentView(long t) throws VersionNoLongerAvailableException
     {

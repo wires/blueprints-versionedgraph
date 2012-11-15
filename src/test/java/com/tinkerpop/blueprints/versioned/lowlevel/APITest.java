@@ -1,143 +1,137 @@
 package com.tinkerpop.blueprints.versioned.lowlevel;
 
 
-import com.tinkerpop.blueprints.*;
-import com.tinkerpop.blueprints.impls.tg.TinkerGraph;
+import com.google.common.base.Function;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterables;
+import com.tinkerpop.blueprints.TransactionalGraph;
 import com.tinkerpop.blueprints.versioned.*;
 import com.tinkerpop.blueprints.versioned.exceptions.VersionNoLongerAvailableException;
 import com.tinkerpop.blueprints.versioned.impl.VersionedGraphImpl;
+import org.fest.assertions.api.Assertions;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
-import static org.fest.assertions.Assertions.assertThat;
+import java.util.*;
 
-class TransactionFaker implements TransactionalGraph
-{
-    final Graph graph;
+import static com.tinkerpop.blueprints.versioned.lowlevel.Util.*;
+import static org.fest.assertions.api.Assertions.assertThat;
 
-    public TransactionFaker(Graph graph)
-    {
-        this.graph = graph;
-    }
-
-    @Override
-    public void stopTransaction(Conclusion conclusion)
-    {}
-
-    @Override
-    public Features getFeatures()
-    {
-        return graph.getFeatures();
-    }
-
-    @Override
-    public Vertex addVertex(Object id)
-    {
-        return graph.addVertex(id);
-    }
-
-    @Override
-    public Vertex getVertex(Object id)
-    {
-        return graph.getVertex(id);
-    }
-
-    @Override
-    public void removeVertex(Vertex vertex)
-    {
-        graph.removeVertex(vertex);
-    }
-
-    @Override
-    public Iterable<Vertex> getVertices()
-    {
-        return graph.getVertices();
-    }
-
-    @Override
-    public Iterable<Vertex> getVertices(String key, Object value)
-    {
-        return graph.getVertices(key, value);
-    }
-
-    @Override
-    public Edge addEdge(Object id, Vertex outVertex, Vertex inVertex, String label)
-    {
-        return graph.addEdge(id, outVertex, inVertex, label);
-    }
-
-    @Override
-    public Edge getEdge(Object id)
-    {
-        return graph.getEdge(id);
-    }
-
-    @Override
-    public void removeEdge(Edge edge)
-    {
-        graph.removeEdge(edge);
-    }
-
-    @Override
-    public Iterable<Edge> getEdges()
-    {
-        return graph.getEdges();
-    }
-
-    @Override
-    public Iterable<Edge> getEdges(String key, Object value)
-    {
-        return graph.getEdges(key, value);
-    }
-
-    @Override
-    public void shutdown()
-    {
-        graph.shutdown();
-    }
-}
 
 public class APITest
 {
+    final Random r = new Random();
+
     TransactionalGraph tg;
     VersionedGraph vg;
 
     @BeforeTest
     public void setup() {
-        tg = new TransactionFaker(new TinkerGraph());
+        tg = newGraph();
         vg = new VersionedGraphImpl(tg);
     }
 
-    @Test
-    public void test() throws VersionNoLongerAvailableException
+    VersionedSubset createSubset(String name, long version)
     {
-        final VersionedSubset vss = vg.createVersionedSubset("A", 1);
+        // create a subset
+        final VersionedSubset vss = vg.createVersionedSubset(name, version);
 
-        final VersionedVertex x = vss.addVertex("x");
-        x.setProperty("foo-x", "bar");
+        // create two vertices with some random properties associated with them
+        final VersionedVertex x = rndProps(vss.addVertex("x"));
+        final VersionedVertex y = rndProps(vss.addVertex("y"));
 
-        final VersionedVertex y = vss.addVertex("x");
-        x.setProperty("foo-y", "baz");
+        return vss;
+    }
 
+    final Function<VersionedVertex, Object> extractIds = new Function<VersionedVertex, Object>()
+        {
+            @Override
+            public Object apply(VersionedVertex input)
+            {
+                return input.id();
+            }
+        };
+
+    final Predicate<VersionedVertex> hasId(final String id) {
+        return new Predicate<VersionedVertex>() {
+            public boolean apply(VersionedVertex input) {
+                return id.equals(input.id());
+            }
+        };
+    }
+
+    @Test
+    public void testAddingSubset() throws VersionNoLongerAvailableException
+    {
+        // create a subset
+        final VersionedSubset vss = createSubset("A", 1);
+
+        // commit the subset
         final long t = vss.commit();
 
-        final VersionedSubset vss2 = vg.createVersionedSubset("A", 2);
+        // create a view
+        final ConsistentView cv = vg.createConsistentView(t);
 
-        final VersionedVertex x2 = vss2.addVertex("x");
-        x.setProperty("foo-x2", "bar2");
+        assertThat(Iterables.transform(vss.vertices(), extractIds)).containsOnly("x", "y");
 
-        final VersionedVertex y2 = vss2.addVertex("x");
-        x.setProperty("foo-y2", "baz2");
+        assertThat(Iterables.filter(vss.vertices(), hasId("x"))).hasSize(1);
+        assertThat(Iterables.filter(vss.vertices(), hasId("y"))).hasSize(1);
 
-        final long t2 = vss.commit();
+        final VersionedVertex x = Iterables.filter(vss.vertices(), hasId("x")).iterator().next();
+        final VersionedVertex y = Iterables.filter(vss.vertices(), hasId("y")).iterator().next();
 
-        final ConsistentView cv1 = vg.createConsistentView(t);
-        final ConsistentView cv2 = vg.createConsistentView(t);
+        assertThat(equalProperties(x, cv.getVertex("x"))).isTrue();
+        assertThat(equalProperties(y, cv.getVertex("y"))).isTrue();
+    }
 
-        assertThat(cv1.getVertex("x").vertex().getProperty("foo-x")).isEqualTo("bar");
-        assertThat(cv1.getVertex("y").vertex().getProperty("foo-y")).isEqualTo("baz");
-        
-        assertThat(cv1.getVertex("x").vertex().getProperty("foo-x2")).isEqualTo("bar2");
-        assertThat(cv1.getVertex("y").vertex().getProperty("foo-y2")).isEqualTo("baz2");
+
+    @Test
+    public void testAddingSubsets() throws VersionNoLongerAvailableException
+    {
+        Map<VersionedSubset, ConsistentView> m = new HashMap<VersionedSubset, ConsistentView>();
+
+        for(int i = 1; i < 11; i++)
+        {
+            // create a subset
+            final VersionedSubset vss = createSubset("A", i);
+
+            // commit the subset
+            final long t = vss.commit();
+
+            // create a view
+            final ConsistentView cv = vg.createConsistentView(t);
+
+            m.put(vss, cv);
+        }
+
+        for(Map.Entry<VersionedSubset, ConsistentView> e : m.entrySet())
+        {
+            final VersionedSubset vss = e.getKey();
+            final ConsistentView cv = e.getValue();
+
+            assertThat(Iterables.transform(vss.vertices(), extractIds)).containsOnly("x", "y");
+
+            assertThat(Iterables.filter(vss.vertices(), hasId("x"))).hasSize(1);
+            assertThat(Iterables.filter(vss.vertices(), hasId("y"))).hasSize(1);
+
+            final VersionedVertex x = Iterables.filter(vss.vertices(), hasId("x")).iterator().next();
+            final VersionedVertex y = Iterables.filter(vss.vertices(), hasId("y")).iterator().next();
+
+            assertThat(equalProperties(x, cv.getVertex("x"))).isTrue();
+            assertThat(equalProperties(y, cv.getVertex("y"))).isTrue();
+        }
+    }
+
+    
+
+    @Test
+    public void testje()
+    {
+        final ArrayList<Koekje> koekjes = new ArrayList<Koekje>();
+        koekjes.add(new Koekje("van"));
+        koekjes.add(new Koekje("eigen"));
+        koekjes.add(new Koekje("deeg"));
+
+        Assertions.assertThat(Assertions.extractProperty("naam", String.class).from(koekjes)).containsOnly("van", "eigen", "deeg");
     }
 }

@@ -1,16 +1,16 @@
 package com.tinkerpop.blueprints.versioned;
 
-import com.tinkerpop.blueprints.Vertex;
+import com.tinkerpop.blueprints.Element;
 
-public interface SymbolicVertex
+/**
+ * Immutable vertex.
+ *
+ * The version of the data depends on which {@link ConsistentView} is used to obtain
+ * the SymbolicVertex.
+ *
+ * {@inheritDoc}
+ */
+public interface SymbolicVertex extends Element
 {
     Object id();
-
-    /**
-     * Immutable vertex.
-     *
-     * The version of the data depends on which {@link ConsistentView} is used to obtain
-     * the SymbolicVertex.
-     */
-    Vertex vertex();
 }

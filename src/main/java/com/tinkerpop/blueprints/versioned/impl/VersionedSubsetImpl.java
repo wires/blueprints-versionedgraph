@@ -23,8 +23,7 @@ public class VersionedSubsetImpl implements VersionedSubset
         this.version = version;
     }
 
-    /** {@inheritDoc} */
-    @Override public SymbolicVertex getVertex(Object id) throws NotSymbolicException
+    public SymbolicVertex getVertex(Object id) throws NotSymbolicException
     {
         final VersionedVertex v = ownedVx.get(id);
         if(v != null)
@@ -33,8 +32,7 @@ public class VersionedSubsetImpl implements VersionedSubset
         return null; // TODO implement
     }
 
-    /** {@inheritDoc} */
-    @Override public VersionedVertex getVersionedVertex(Object id) throws NotVersionedException
+    public VersionedVertex getVersionedVertex(Object id) throws NotVersionedException
     {
         final VersionedVertex v = ownedVx.get(id);
         if(v == null)
@@ -44,38 +42,22 @@ public class VersionedSubsetImpl implements VersionedSubset
     }
 
     @Override
-    public void addEdge(SymbolicVertex tail, SymbolicVertex head, String label)
+    public Iterable<VersionedVertex> vertices()
     {
-        //To change body of implemented methods use File | Settings | File Templates.
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
     @Override
-    public void addEdge(SymbolicVertex tail, VersionedVertex head, String label)
+    public Iterable<VersionedEdge> edges()
     {
-        //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    @Override
-    public void addEdge(VersionedVertex tail, SymbolicVertex head, String label)
-    {
-        //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    @Override
-    public void addEdge(VersionedVertex tail, VersionedVertex head, String label)
-    {
-        //To change body of implemented methods use File | Settings | File Templates.
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
     /** {@inheritDoc} */
-    @Override public VersionedVertex addVertex(Object id)
+    @Override
+    public VersionedVertex addVertex(Object id)
     {
         return null;
-    }
-
-    @Override
-    public void refresh()
-    {
     }
 
     @Override
