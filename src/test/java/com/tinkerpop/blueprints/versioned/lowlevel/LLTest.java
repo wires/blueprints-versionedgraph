@@ -4,7 +4,7 @@ import com.tinkerpop.blueprints.impls.tg.TinkerGraph;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
-import static org.fest.assertions.Assertions.assertThat;
+import static org.fest.assertions.api.Assertions.assertThat;
 
 public class LLTest
 {
